@@ -1,3 +1,6 @@
 {
-    "cSpell.words": ["SFML"]
+    "cSpell.words": [
+        "SFML"
+    ],
+    "makefile.configureOnOpen": true
 }
