@@ -2,5 +2,8 @@
     "cSpell.words": [
         "SFML"
     ],
-    "makefile.configureOnOpen": true
+    "makefile.configureOnOpen": true,
+    "files.associations": {
+        "iostream": "cpp"
+    }
 }

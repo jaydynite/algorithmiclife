@@ -4,28 +4,36 @@
 
 int main()
 {
-    int result = add(2, 3);
-
-    std::cout << result;
-
-    sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");
-    sf::CircleShape shape;
-    shape.setRadius(40.f);
-    shape.setPosition(100.f, 100.f);
-    shape.setFillColor(sf::Color::Cyan);
+    sf::RenderWindow window(sf::VideoMode(640, 480), "Algorithmic Life", sf::Style::Titlebar | sf::Style::Close);
+    sf::Event evnt;
 
     while (window.isOpen())
     {
-        sf::Event event;
-
-        while (window.pollEvent(event))
+        //Event polling
+        while (window.pollEvent(evnt))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+            switch (evnt.type)
+            {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                case sf::Event::KeyPressed:
+                    if (evnt.key.code == sf::Keyboard::Escape)
+                        window.close();
+                    break;
+                default:
+                    break;
+            }
         }
 
-        window.clear();
-        window.draw(shape);
-        window.display();
+        //Update
+        
+        //Render
+        window.clear(); //Clear old frame
+
+        //Draw my game
+
+        window.display(); //Tell app that window is done drawing
+
     }
 }
