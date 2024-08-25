@@ -4,6 +4,8 @@
     ],
     "makefile.configureOnOpen": true,
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "atomic": "cpp",
+        "ios": "cpp"
     }
 }
