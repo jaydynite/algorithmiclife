@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Cell.h"
+
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -28,11 +30,13 @@ class Game
         //Mouse/key state
         bool leftClicked;
         bool leftClickedPrevious;
+        bool rightClicked;
+        bool rightClickedPrevious;
         bool paused;
 
         //Game objects
-        std::vector<std::vector<bool>> cells;
-        std::vector<std::vector<bool>> nextGenCells;
+        std::vector<std::vector<Cell>> cells;
+        std::vector<std::vector<Cell>> nextGenCells;
         int cellsWidth;
         int cellsHeight;
         int cellSize;
@@ -54,7 +58,9 @@ class Game
         //Member functions
         //Cell functions
         void spawnCells();
-        void updateCells();
+        void updateCellsConways();
+        void updateCellsJays();
+        void updateCellsVelocities();
         void renderCells();
         void resetCells();
 
