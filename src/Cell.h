@@ -1,12 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 class Cell
 {
     private:
         //Cell states
-        bool alive;
+        float size;
         float charge;
         float mass;
         std::vector<float> position;
@@ -15,7 +16,7 @@ class Cell
         std::vector<float> force;
 
         //Initialisers
-        void initStates(bool alive,
+        void initStates(float size,
                         float charge,
                         float mass,
                         std::vector<float> position,
@@ -27,7 +28,7 @@ class Cell
 
     public:
         //Constructor and destructor
-        Cell(bool alive,
+        Cell(float size,
              float charge,
              float mass,
              std::vector<float> position,
@@ -43,7 +44,7 @@ class Cell
         void reverseLife();
 
         //Getters
-        bool getAlive();
+        float getSize();
         float getCharge();
         float getMass();
         std::vector<float> getPosition();
@@ -52,7 +53,7 @@ class Cell
         std::vector<float> getForce();
 
         //Setters
-        void setAlive(bool alive);
+        void setSize(float size);
         void setCharge(float charge);
         void setMass(float mass);
         void setPosition(std::vector<float> position);

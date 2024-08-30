@@ -2,7 +2,7 @@
 
 //Initialisers
 //Initialises cell with all specified attributes.
-void Cell::initStates(bool alive,
+void Cell::initStates(float size,
                      float charge,
                      float mass,
                      std::vector<float> position,
@@ -10,7 +10,7 @@ void Cell::initStates(bool alive,
                      std::vector<float> acceleration,
                      std::vector<float> force)
 {
-    this->alive = alive;
+    this->size = size;
     this->charge = charge;
     this->mass = mass;
     this->position = position;
@@ -22,7 +22,7 @@ void Cell::initStates(bool alive,
 //Initialises empty cell.
 void Cell::initStates()
 {
-    this->alive = false;
+    this->size = 0.f;
     this->charge = 0.f;
     this->mass = 0.f;
     this->position = {0.f, 0.f};
@@ -32,7 +32,7 @@ void Cell::initStates()
 }
 
 //Constructor for all parameters
-Cell::Cell(bool alive,
+Cell::Cell(float size,
              float charge,
              float mass,
              std::vector<float> position,
@@ -40,7 +40,7 @@ Cell::Cell(bool alive,
              std::vector<float> acceleration,
              std::vector<float> force)
 {
-    this->initStates(alive,
+    this->initStates(size,
                      charge,
                      mass,
                      position,
@@ -61,16 +61,10 @@ Cell::~Cell()
     
 }
 
-//Reverses life state
-void Cell::reverseLife()
-{
-    this->alive = !this->alive;
-}
-
 //Getters
-bool Cell::getAlive()
+float Cell::getSize()
 {
-    return this->alive;
+    return this->size;
 }
 
 float Cell::getCharge()
@@ -104,9 +98,9 @@ std::vector<float> Cell::getForce()
 }
 
 //Settters
-void Cell::setAlive(bool alive)
+void Cell::setSize(float size)
 {
-    this->alive = alive;
+    this->size = size;
 }
 
 void Cell::setCharge(float charge)

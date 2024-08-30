@@ -32,19 +32,32 @@ class Game
         bool leftClickedPrevious;
         bool rightClicked;
         bool rightClickedPrevious;
+        bool shiftClicked;
         bool paused;
+        bool promptBoxActivated;
 
         //Game objects
-        std::vector<std::vector<Cell>> cells;
-        std::vector<std::vector<Cell>> nextGenCells;
-        int cellsWidth;
-        int cellsHeight;
-        int cellSize;
+        std::vector<Cell> cells;
+        std::vector<Cell> nextGenCells;
+        float lastCellSize;
+        float lastCellCharge;
+        float lastCellMass;
+        std::vector<float> lastCellVelocity;
+        std::vector<float> lastCellAcceleration;
+        std::vector<float> lastCellForce;
+
 
         //Private functions
         void initVariables();
         void initWindow();
-        void initCells();
+        //(Conway) void initCells();
+        
+        //Prompt window state anc temp cell state
+        std::vector<std::string> inputText;
+        int currentInputIndex;
+        sf::Font font;
+        float tempCellX;
+        float tempCellY;
 
     public:
         //Constructor
@@ -60,12 +73,15 @@ class Game
         void spawnCells();
         void updateCellsConways();
         void updateCellsJays();
-        void updateCellsVelocities();
+        void updateCellsPosition();
         void renderCells();
         void resetCells();
 
+        //update/render functions
         void pollEvents();
         void updateMousePositionWindow();
+        void renderPromptBox();
+        void handlePromptInput(sf::Event event);
         void update();
         void render();
 };
