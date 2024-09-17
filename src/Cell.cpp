@@ -8,7 +8,8 @@ void Cell::initStates(float size,
                      std::vector<float> position,
                      std::vector<float> velocity,
                      std::vector<float> acceleration,
-                     std::vector<float> force)
+                     std::vector<float> force,
+                     std::vector<float> collisionImpulse)
 {
     this->size = size;
     this->charge = charge;
@@ -17,6 +18,7 @@ void Cell::initStates(float size,
     this->velocity = velocity;
     this->acceleration = acceleration;
     this->force = force;
+    this->collisionImpulse = collisionImpulse;
 }
 
 //Initialises empty cell.
@@ -29,6 +31,7 @@ void Cell::initStates()
     this->velocity = {0.f, 0.f};
     this->acceleration = {0.f, 0.f};
     this->force = {0.f, 0.f};
+    this->collisionImpulse = {0.f, 0.f};
 }
 
 //Constructor for all parameters
@@ -38,7 +41,8 @@ Cell::Cell(float size,
              std::vector<float> position,
              std::vector<float> velocity,
              std::vector<float> acceleration,
-             std::vector<float> force)
+             std::vector<float> force,
+             std::vector<float> collisionImpulse)
 {
     this->initStates(size,
                      charge,
@@ -46,7 +50,8 @@ Cell::Cell(float size,
                      position,
                      velocity,
                      acceleration,
-                     force);
+                     force,
+                     collisionImpulse);
 }
 
 //Constructor for black cell
@@ -97,6 +102,11 @@ std::vector<float> Cell::getForce()
     return this->force;
 }
 
+std::vector<float> Cell::getCollisionImpulse()
+{
+    return this->collisionImpulse;
+}
+
 //Settters
 void Cell::setSize(float size)
 {
@@ -133,6 +143,11 @@ void Cell::setForce(std::vector<float> force)
     this->force = force;
 }
 
+void Cell::setCollisionImpulse(std::vector<float> collisionImpulse)
+{
+    this->collisionImpulse = collisionImpulse;
+}
+
 void Cell::addPosition(std::vector<float> additionalPosition)
 {
     for (int i = 0; i < 2; i++)
@@ -162,6 +177,14 @@ void Cell::addForce(std::vector<float> additionalForce)
     for (int i = 0; i < 2; i++)
     {
         this->force[i] += additionalForce[i];
+    }
+}
+
+void Cell::addCollisionImpulse(std::vector<float> additionalCollisionImpulse)
+{
+    for (int i = 0; i < 2; i++)
+    {
+        this->collisionImpulse[i] += additionalCollisionImpulse[i];
     }
 }
 

@@ -84,7 +84,7 @@ void Game::spawnCells()
         }
 
         // Add the new cell with these attributes
-        this->cells.push_back(Cell(lastCellSize, lastCellCharge, lastCellMass, {this->tempCellX - this->lastCellSize, this->tempCellY - this->lastCellSize}, {lastCellVelocity[0], lastCellVelocity[1]}, {0.f, 0.f}, {0.f, 0.f}));
+        this->cells.push_back(Cell(lastCellSize, lastCellCharge, lastCellMass, {this->tempCellX, this->tempCellY}, {lastCellVelocity[0], lastCellVelocity[1]}, {0.f, 0.f}, {0.f, 0.f}, {0.f, 0.f}));
     }
     else if (paused == true && this->rightClicked && !this->rightClickedPrevious)
     {
@@ -154,6 +154,7 @@ void Game::updateCellsJays()
     for (int i = 0; i < this->cells.size(); i++)
     {
         this->cells[i].setForce({0.f, 0.f});
+        this->cells[i].setCollisionImpulse({0.f, 0.f});
 
         for (int j = 0; j < this->cells.size(); j++)
         {
@@ -169,19 +170,49 @@ void Game::updateCellsJays()
                 continue;
             
             float distance = sqrt(distanceSquared);
-            float chargeProduct = cells[i].getCharge()*cells[j].getCharge();
+            float chargeProduct = this->cells[i].getCharge()*this->cells[j].getCharge();
 
             float chargeForceMagnitude = chargeProduct/distanceSquared;
 
-            std::vector<float> chargeForce = {10000*chargeForceMagnitude*(distanceX/distance), 10000*chargeForceMagnitude*(distanceY/distance)};
+            std::vector<float> chargeForce = {chargeForceMagnitude*(distanceX/distance), chargeForceMagnitude*(distanceY/distance)};
 
             this->cells[i].addForce(chargeForce);
 
+            //Collision force calculator
+            if (distance <= this->cells[i].getSize() + this->cells[j].getSize())
+            {
+                std::cout << "Cell " << i << " over Cell " << j << "\n";
 
-            
+                //Calculating normal unit vector of collision tangent
+                std::vector<float> normalUnitVector = {distanceX/distance, distanceY/distance};
+                std::cout << "Normal: " << "(" << normalUnitVector[0] << ", " << normalUnitVector[1] << ")\n";
+
+                //Relative velocity
+                std::vector<float> relativeVelocity = {this->cells[j].getVelocity()[0] - this->cells[i].getVelocity()[0],
+                                                       this->cells[j].getVelocity()[1] - this->cells[i].getVelocity()[1]};
+                std::cout << "Relative velocity: " << "(" << relativeVelocity[0] << ", " << relativeVelocity[1] << ")\n";
+                //Relative velocity along the normal
+                float velocityAlongNormal = relativeVelocity[0]*normalUnitVector[0] + relativeVelocity[1]*normalUnitVector[1];
+                std::cout << "Velocity along normal: " << velocityAlongNormal << "\n";
+
+                //Expected impulse magnitude calculation
+                float numerator = -2*velocityAlongNormal;
+                std::cout << "-2*velocityAlongNormal: " << numerator << "\n";
+                float denominator = (1/this->cells[i].getMass() + 1/this->cells[j].getMass());
+                std::cout << "1/MCell0 + 1/MCell1: " << denominator << "\n";
+                float j = numerator/denominator;
+                std::cout << "Impulse: " << j << "\n";
+
+                //Expected impulse
+                std::vector<float> impulse = {j*normalUnitVector[0], j*normalUnitVector[1]};
+
+                if (velocityAlongNormal < 0)
+                    continue;
+
+                this->cells[i].addCollisionImpulse({-impulse[0], -impulse[1]});
+                //this->cells[i].addForce({-impulse[0], -impulse[1]});
+            }
         }
-        this->cells[i].updateAcceleration();
-        this->cells[i].updateVelocity();
     }
 }
 
@@ -190,8 +221,19 @@ void Game::updateCellsPosition()
 {
     for (int i = 0; i < this->cells.size(); i++)
     {
+        std::cout << "Cell " << i << " forces: " << "(" << this->cells[i].getForce()[0] << ", " << this->cells[i].getForce()[1] << ")\n";
+        this->cells[i].updateAcceleration();
+        
+        if (this->cells[i].getCollisionImpulse()[0] == 0 && this->cells[i].getCollisionImpulse()[1] == 0)
+            this->cells[i].updateVelocity();
+        else
+            this->cells[i].addVelocity({this->cells[i].getCollisionImpulse()[0]/this->cells[i].getMass(), this->cells[i].getCollisionImpulse()[1]/this->cells[i].getMass()});
+        
         this->cells[i].updatePosition();
+        std::cout << "Cell " << i << " velocity: " << "(" << this->cells[i].getVelocity()[0] << ", " << this->cells[i].getVelocity()[1] << ")\n";
+        
     }
+    std::cout << "\n";
 }
 
 void Game::renderPromptBox()
@@ -225,7 +267,7 @@ void Game::renderCells()
     for (int i = 0; i < this->cells.size(); i++)
     {
         sf::CircleShape cellForm;
-        cellForm.setPosition(this->cells[i].getPosition()[0], this->cells[i].getPosition()[1]);
+        cellForm.setPosition(this->cells[i].getPosition()[0] - this->cells[i].getSize(), this->cells[i].getPosition()[1] - this->cells[i].getSize());
         cellForm.setRadius(this->cells[i].getSize());
         cellForm.setFillColor(this->cells[i].getCharge() > 0.f? sf::Color::Cyan
                             : sf::Color::Magenta);
@@ -305,7 +347,7 @@ void Game::pollEvents()
                     }
                     
                     // Add the new cell with these attributes
-                    this->cells.push_back(Cell(lastCellSize, lastCellCharge, lastCellMass, {this->tempCellX - this->lastCellSize, this->tempCellY - this->lastCellSize}, {lastCellVelocity[0], lastCellVelocity[1]}, {0.f, 0.f}, {0.f, 0.f}));
+                    this->cells.push_back(Cell(lastCellSize, lastCellCharge, lastCellMass, {this->tempCellX, this->tempCellY}, {lastCellVelocity[0], lastCellVelocity[1]}, {0.f, 0.f}, {0.f, 0.f}, {0.f, 0.f}));
 
                     this->promptBoxActivated = false;  // Close the prompt box
                 }

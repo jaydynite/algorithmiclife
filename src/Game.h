@@ -52,7 +52,7 @@ class Game
         void initWindow();
         //(Conway) void initCells();
         
-        //Prompt window state anc temp cell state
+        //Prompt window state and temp cell state
         std::vector<std::string> inputText;
         int currentInputIndex;
         sf::Font font;
