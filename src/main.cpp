@@ -2,7 +2,7 @@
 #include "Game.h"
 
 const float UPDATE_RATE = 1.0f/100000.0f;
-const int UPDATES_PER_RENDER = 20;
+const int UPDATES_PER_RENDER = 1667;
 
 int main()
 {

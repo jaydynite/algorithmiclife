@@ -202,7 +202,7 @@ void Game::updateCells()
                                                              (this->cells[i].getPosition()[1] + this->cells[j].getPosition()[1])/2};
 
                         // Create one photon
-                        //this->cells.push_back(Cell(1.f, 0.f, 0.f, collisionPoint, tangentUnitVector, {0.f, 0.f}, {0.f, 0.f}, {0.f, 0.f}, photonEnergy));
+                        this->cells.push_back(Cell(1.f, 0.f, 0.f, collisionPoint, tangentUnitVector, {0.f, 0.f}, {0.f, 0.f}, {0.f, 0.f}, photonEnergy));
                     }
                 }
             }
