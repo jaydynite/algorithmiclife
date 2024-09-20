@@ -39,13 +39,6 @@ void Game::initMainView()
     this->mainView.setSize(1000, 1000);
 }
 
-//(Conways:) Initialses 2d cells vector with all false (dead)
-// void Game::initCells()
-// {
-//     this->cells.resize(cellsWidth + 2, std::vector<Cell>(cellsWidth + 2, Cell()));
-//     this->nextGenCells.resize(cellsWidth + 2, std::vector<Cell>(cellsWidth + 2, Cell()));
-// }
-
 //Constructors
 Game::Game()
 {
