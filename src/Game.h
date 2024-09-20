@@ -23,6 +23,8 @@ class Game
         sf::RenderWindow* window;
         sf::VideoMode videoMode;
         sf::Event evnt;
+        sf::View mainView;
+        sf::RectangleShape boundary;
 
         //Mouse positions
         sf::Vector2i mousePositionWindow;
@@ -50,6 +52,7 @@ class Game
         //Private functions
         void initVariables();
         void initWindow();
+        void initMainView();
         //(Conway) void initCells();
         
         //Prompt window state and temp cell state
@@ -72,9 +75,10 @@ class Game
         //Cell functions
         void spawnCells();
         void updateCellsConways();
-        void updateCellsJays();
+        void updateCells();
         void updateCellsPosition();
         void renderCells();
+        void renderBoundary();
         void resetCells();
 
         //update/render functions

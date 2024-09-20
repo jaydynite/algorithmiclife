@@ -15,6 +15,7 @@ class Cell
         std::vector<float> acceleration;
         std::vector<float> force;
         std::vector<float> collisionImpulse;
+        float energy;
 
         //Initialisers
         void initStates(float size,
@@ -24,9 +25,8 @@ class Cell
                         std::vector<float> velocity,
                         std::vector<float> acceleration,
                         std::vector<float> force,
-                        std::vector<float> collisionImpulse);
-
-        void initStates();
+                        std::vector<float> collisionImpulse,
+                        float energy);
 
     public:
         //Constructor and destructor
@@ -37,9 +37,8 @@ class Cell
              std::vector<float> velocity,
              std::vector<float> acceleration,
              std::vector<float> force,
-             std::vector<float> collisionImpulse);
-        
-        Cell();
+             std::vector<float> collisionImpulse,
+             float energy);
 
         ~Cell();
 
@@ -52,6 +51,7 @@ class Cell
         std::vector<float> getAcceleration();
         std::vector<float> getForce();
         std::vector<float> getCollisionImpulse();
+        float getEnergy();
 
         //Setters
         void setSize(float size);
@@ -62,6 +62,7 @@ class Cell
         void setAcceleration(std::vector<float> acceleration);
         void setForce(std::vector<float> force);
         void setCollisionImpulse(std::vector<float> collisionImpulse);
+        void setEnergy(float energy);
 
         void addPosition(std::vector<float> additionalPosition);
         void addVelocity(std::vector<float> additionalVelocity);

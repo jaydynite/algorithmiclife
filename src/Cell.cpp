@@ -9,7 +9,8 @@ void Cell::initStates(float size,
                      std::vector<float> velocity,
                      std::vector<float> acceleration,
                      std::vector<float> force,
-                     std::vector<float> collisionImpulse)
+                     std::vector<float> collisionImpulse,
+                     float energy)
 {
     this->size = size;
     this->charge = charge;
@@ -19,19 +20,7 @@ void Cell::initStates(float size,
     this->acceleration = acceleration;
     this->force = force;
     this->collisionImpulse = collisionImpulse;
-}
-
-//Initialises empty cell.
-void Cell::initStates()
-{
-    this->size = 0.f;
-    this->charge = 0.f;
-    this->mass = 0.f;
-    this->position = {0.f, 0.f};
-    this->velocity = {0.f, 0.f};
-    this->acceleration = {0.f, 0.f};
-    this->force = {0.f, 0.f};
-    this->collisionImpulse = {0.f, 0.f};
+    this->energy = energy;
 }
 
 //Constructor for all parameters
@@ -42,7 +31,8 @@ Cell::Cell(float size,
              std::vector<float> velocity,
              std::vector<float> acceleration,
              std::vector<float> force,
-             std::vector<float> collisionImpulse)
+             std::vector<float> collisionImpulse,
+             float energy)
 {
     this->initStates(size,
                      charge,
@@ -51,13 +41,8 @@ Cell::Cell(float size,
                      velocity,
                      acceleration,
                      force,
-                     collisionImpulse);
-}
-
-//Constructor for black cell
-Cell::Cell()
-{
-    this->initStates();
+                     collisionImpulse,
+                     energy);
 }
 
 //Destructor
@@ -107,6 +92,11 @@ std::vector<float> Cell::getCollisionImpulse()
     return this->collisionImpulse;
 }
 
+float Cell::getEnergy()
+{
+    return this->energy;
+}
+
 //Settters
 void Cell::setSize(float size)
 {
@@ -146,6 +136,11 @@ void Cell::setForce(std::vector<float> force)
 void Cell::setCollisionImpulse(std::vector<float> collisionImpulse)
 {
     this->collisionImpulse = collisionImpulse;
+}
+
+void Cell::setEnergy(float energy)
+{
+    this->energy = energy;
 }
 
 void Cell::addPosition(std::vector<float> additionalPosition)
@@ -200,5 +195,6 @@ void Cell::updateVelocity()
 
 void Cell::updateAcceleration()
 {
-    this->acceleration = {this->force[0]/this->mass, this->force[1]/this->mass};
+    if (this->mass > 0)
+        this->acceleration = {this->force[0]/this->mass, this->force[1]/this->mass};
 }
