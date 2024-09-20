@@ -198,8 +198,8 @@ void Game::updateCells()
                         std::vector<float> tangentUnitVector = {-normalUnitVector[1], normalUnitVector[0]};
 
                         // Collision point
-                        std::vector<float> collisionPoint = {(this->cells[i].getPosition()[0] + this->cells[j].getPosition()[0])/2,
-                                                             (this->cells[i].getPosition()[1] + this->cells[j].getPosition()[1])/2};
+                        std::vector<float> collisionPoint = {this->cells[i].getPosition()[0] - this->cells[i].getSize()*normalUnitVector[0],
+                                                             this->cells[i].getPosition()[1] - this->cells[i].getSize()*normalUnitVector[1]};
 
                         // Create one photon
                         this->cells.push_back(Cell(1.f, 0.f, 0.f, collisionPoint, tangentUnitVector, {0.f, 0.f}, {0.f, 0.f}, {0.f, 0.f}, photonEnergy));
